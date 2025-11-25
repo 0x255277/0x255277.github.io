@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?display=swap&family=Aboreto:ital,wght@0,400;1,400&family=Belleza:ital,wght@0,400;1,400');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -18,14 +24,85 @@ body {
     width: 100%;
     height: 100%;
     background-color: #000000;
-    /* cursor: default; */
+    cursor: default;
 }
 
-#text-navbar {
+.text-bold {
+    font-weight: bold;
+}
+
+.mb-2 {
+    margin-bottom: 20px !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.text-navbar {
     font-size: 24px;
     font-weight: bold;
+    font-family: 'Aboreto', cursive;
     position: absolute;
-    top: 20px;
+    top: 50px;
     color: white;
     z-index: 10;
+}
+
+.text-body {
+    font-size: 16px;
+    font-family: 'Belleza', sans-serif;
+    color: white;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.h1-body {
+    font-size: 24px;
+    font-family: 'Belleza', sans-serif;
+    color: white;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.box {
+    padding: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    position: relative;
+    width: 80%;
+}
+
+.button-green {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+}
+/* hover */
+.button-green:hover {
+    background-color: rgba(50, 255, 50, 0.5);
+}
+
+.button-red {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+}
+/* hover */
+.button-red:hover {
+    background-color: rgba(255, 50, 50, 0.5);
 }

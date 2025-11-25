@@ -11,7 +11,7 @@ class Star {
         this.x = this.baseX;
         this.y = this.baseY;
 
-        this.star_size = Math.random() * 3 + 1;
+        this.star_size = Math.random() * 2 + 1;
         this.opacity = 0;
         this.fadeDirection = 1; // 1 fade in, -1 fade out
         this.fadeSpeed = Math.random() * 0.02 + 0.005;
@@ -120,14 +120,14 @@ class Starfield {
         
         window.addEventListener('restar_size', () => this.restar_sizeCanvas());
         
-        // mouse movement
-        this.canvas.addEventListener('mousemove', (e) => {
+        // mouse movement (track across entire document)
+        document.addEventListener('mousemove', (e) => {
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
         });
         
-        // touch movement for mobile
-        this.canvas.addEventListener('touchmove', (e) => {
+        // touch movement for mobile (track across entire document)
+        document.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
             this.mouseX = touch.clientX;
@@ -168,4 +168,41 @@ class Starfield {
 
 window.addEventListener('DOMContentLoaded', () => {
     new Starfield();
+    
+    // Button event listeners
+    const navbar = document.getElementById('navbar');
+    const yesButton = document.getElementById('yes-button');
+    const noButton = document.getElementById('no-button');
+    const aboutCard = document.getElementById('about-card');
+    const agreement = document.getElementById('agreement');
+    
+    if (yesButton && noButton && aboutCard) {
+        // Yes button - show about card
+        yesButton.addEventListener('click', () => {
+            aboutCard.style.display = 'block';
+            agreement.style.display = 'none';
+            aboutCard.removeAttribute('hidden');
+            aboutCard.innerHTML = `
+                <img src="assets/kanade-banner.png">
+                <h1 class="h1-body">自分について - ABOUT ME</h1>
+                <p class="text-body mb-2">I'm a 21+ y.o. person who loves to play rhythm games (i'm bad at it), rpg games, and watch various anime.</p>
+                <p class="text-body mb-2">I also collect merch, especially for Project Sekai !!</p>
+                <div class="box">
+                    <p class="text-body mb-0 text-bold">!! HEAVY RT ACCOUNT, NOT NSFW FREE !!</p>
+                </div>
+                <p class="text-body mb-2">I often randomly join any moots' convo on TL, if you're not comfy pls let me know!!</p>
+                <p class="text-body mb-2">Life is busy, I will be either kinda inactive or just active in one period of time.</p>
+            `;
+            navbar.innerHTML = `
+                <a class="text-navbar" style="margin-left: 10%;" href="https://x.com/cfyia">@cfyia</a>
+                <a class="text-navbar" style="margin-left: 25%;" href="./"> > home</a>
+                <a class="text-navbar" style="margin-left: 38%;" href="./fandom">fandom</a>`
+        });
+        
+        noButton.addEventListener('click', () => {
+            aboutCard.style.display = 'block';
+            agreement.style.display = 'none';
+            aboutCard.innerHTML = '<p class="text-body">feel free to leave</p>';
+        });
+    }
 });
