@@ -41,8 +41,8 @@ class Star {
 
             // repositioning
             if (Math.random() < 0.7) {
-                const extendX = this.canvas.width * 0.2;
-                const extendY = this.canvas.height * 0.2;
+                const extendX = this.canvas.width * 0.5;
+                const extendY = this.canvas.height * 0.5;
 
                 this.baseX = Math.random() * (this.canvas.width + 2 * extendX) - extendX;
                 this.baseY = Math.random() * (this.canvas.height + 2 * extendY) - extendY;
@@ -61,8 +61,8 @@ class Star {
             const mouseOffsetX = -(mouseX - centerX) * this.parallax_depth;
             const mouseOffsetY = -(mouseY - centerY) * this.parallax_depth;
             
-            const scrollOffsetX = -scrollX * this.parallax_depth * 0.3;
-            const scrollOffsetY = -scrollY * this.parallax_depth * 0.3;
+            const scrollOffsetX = -scrollX * this.parallax_depth;
+            const scrollOffsetY = -scrollY * this.parallax_depth;
             
             this.x = this.baseX + mouseOffsetX + scrollOffsetX;
             this.y = this.baseY + mouseOffsetY + scrollOffsetY;
@@ -111,7 +111,7 @@ class Starfield {
         
         setTimeout(() => {
             this.parallaxEnabled = true;
-        }, 2000);
+        }, 0);
     }
 
     init() {
@@ -166,10 +166,113 @@ class Starfield {
     }
 }
 
+// Source - https://stackoverflow.com/a
+// Posted by Rickard Elimää, modified by community. See post 'Timeline' for change history
+// Retrieved 2025-11-25, License - CC BY-SA 4.0
+
+class Sparkle {
+    constructor() {
+        this.trailArr = [1, .9, .8, .5, .25, .6, .4, .3, .2];
+        this.sparklesArr = [];
+        this.ANIMATION_SPEED = 1100;
+        this.init();
+    }
+
+    init() {
+        this.moveSparkles();
+        
+        window.addEventListener('mousemove', (e) => {
+            this.trailArr.forEach((i) => {this.trailAnimation(e, i)});
+            
+            let maxYTranslation = 80;
+            this.trailArr.forEach((i) => {this.trailAnimation(e, i, maxYTranslation)});
+        }, false);
+    }
+
+    trailAnimation(e, i, maxYTranslation) {
+        let elem = document.createElement('div');
+        
+        elem = this.styleSparkle(elem, e, i);
+        
+        elem.classList.add("sparkle");
+        
+        document.body.appendChild(elem);
+        
+        elem = this.addAnimationProperties(elem, i, maxYTranslation);
+        
+        this.sparklesArr.push(elem);
+    }
+
+    styleSparkle(elem, e, i) {
+        let j = (1 - i) * 50;
+        let size = Math.random() * 4 + 1 + 'px';
+        
+        elem.style.top = e.pageY - window.scrollY + Math.round(Math.random() * j - j / 2) + 'px';
+        elem.style.left = e.pageX + Math.round(Math.random() * j - j / 2) + 'px';
+        
+        elem.style.width = size;
+        elem.style.height = size;
+        elem.style.borderRadius = size;
+        
+        elem.style.background = 'hsla(' +
+            Math.round(Math.random() * 160) + ', ' +
+            '60%, ' +
+            '90%, ' +
+            i + ')';
+        
+        return elem;
+    }
+
+    addAnimationProperties(elem, i, maxYTranslation) {
+        let lifeExpectancy = Math.round(Math.random() * i * this.ANIMATION_SPEED);
+        
+        elem.maxYTranslation = maxYTranslation;
+        elem.animationSpeed = this.ANIMATION_SPEED;
+        elem.created = Date.now();
+        elem.diesAt = elem.created + lifeExpectancy;
+        
+        return elem;
+    }
+
+    moveSparkles() {
+        let remove = false;
+        let moveIndex = 0;
+        let sparkle;
+        
+        for (let i = 0; i < this.sparklesArr.length; i++) {
+            sparkle = this.sparklesArr[i];
+            remove = sparkle.diesAt <= Date.now();
+            
+            if (remove) {
+                document.body.removeChild(sparkle);
+            } else {
+                if (sparkle.maxYTranslation) {
+                    let interpolation = this.calculateInterpolation(sparkle);
+                    sparkle.style.transform = `translateY(${interpolation}px)`; 
+                }
+                
+                this.sparklesArr[moveIndex++] = sparkle;   
+            }
+        }
+        
+        this.sparklesArr.length = moveIndex;
+        requestAnimationFrame(() => this.moveSparkles());
+    }
+
+    calculateInterpolation(sparkle) {
+        let currentMillis = Date.now();
+        let lifeProgress = (currentMillis - sparkle.created) / sparkle.animationSpeed;
+        let interpolation = sparkle.maxYTranslation * lifeProgress;
+        
+        return interpolation;
+    }
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
     new Starfield();
+    new Sparkle();
     
-    // Button event listeners
     const navbar = document.getElementById('navbar');
     const yesButton = document.getElementById('yes-button');
     const noButton = document.getElementById('no-button');
@@ -177,7 +280,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const agreement = document.getElementById('agreement');
     
     if (yesButton && noButton && aboutCard) {
-        // Yes button - show about card
         yesButton.addEventListener('click', () => {
             aboutCard.style.display = 'block';
             agreement.style.display = 'none';
