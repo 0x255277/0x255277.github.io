@@ -13,7 +13,90 @@
     <div>
         <a class="text-navbar" style="margin-left: 10%;" href="https://x.com/cfyia">@cfyia</a>
         <a class="text-navbar" style="margin-left: 25%;" href="../">home</a>
-        <a class="text-navbar" style="margin-left: 38%;" href="./fandom"> > fandom !!</a>
+        <a class="text-navbar" style="margin-left: 38%;" href="."> > fandom !!</a>
+    </div>
+    <!-- body -->
+    <div style="margin-left: 10%;">
+        <div style="position: relative; margin-top: 120px; background-color: aliceblue;"></div>
+
+        <div>
+            <h1 class="h1-body">XIA 霞　☆　<a href="https://secreto.site/avdgo7" class="h1-body">https://secreto.site/avdgo7</a></h1>
+            <div style="width: 80%; display: flex; justify-content: space-between;">
+                <div class="tag-prsk text-body text-prsk" style="margin-bottom: 0 !important; font-size: 16px; width: 33%;"><b>PROJECT SEKAI</b></div>
+                <div class="tag-genshin text-body text-genshin" style="margin-bottom: 0 !important;"><b>GENSHIN IMPACT</b></div>
+                <div class="tag-hsr text-body text-hsr" style="margin-bottom: 0 !important;"><b>HONKAI: STAR RAIL</b></div>
+            </div>
+            <div class="box-prsk">
+                <table>
+                    <tr>
+                        <td><img class="oshi" src="../assets/fandom/prsk.jpg" alt="Kanade"></td>
+                        <td>
+                            <div style="margin-left: 20px;">
+                                <h2 class="h2-body">MAIN OSHI: 🎼Kanade, ☕Toya</h2>
+                                <p class="text-body">Other: Miku, Mizuki, Ena, Mafuyu, Akito, An</p>
+                                <div class="box" style="width: 100%; margin-top: 0px !important;">
+                                    <h2 class="h2-body">OTP</h2>
+                                    <p class="text-body">KanaToya 🔁🆗, AkiToya 🔁🆗</p>
+                                    <p class="text-body">KanaMafu 🔁❌, AkiAn 🔁❌, MizuEna 🔁❌</p>
+                                    <p class="text-body">I'm actually fine with ships other than these as long as they're not in my NOTP list.</p>
+                                    <br>
+                                    <h2 class="h2-body">NOTP</h2>
+                                    <p class="text-body">Kanade x ANYONE BUT <b>TOYA / NIIGO</b> ; Toya x Tsukasa / Rui / An ; Mizuki x Mafuyu</p>
+                                </div>
+                                <p class="text-body">I sometimes do tiering for niigo event. <button id="tiering-history" style="padding: 5px; background-color: rgba(255, 255, 255, 0.8);">VIEW TIERING HISTORY</button></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-genshin" hidden>
+                <table>
+                    <tr>
+                        <td><img class="oshi" src="../assets/fandom/genshin.jpg" alt="Kanade"></td>
+                        <td>
+                            <div style="margin-left: 20px;">
+                                <h2 class="h2-body"><b>ARLECCHINO</b> MAIN</h2>
+                                <p class="text-body">Favs: Arlecchino, Columbina, Wriothesley, Xiao, Ayato, </p>
+                                <div class="box" style="width: 100%; margin-top: 0px !important;">
+                                    <h2 class="h2-body">OTP 🔁🆗</h2>
+                                    <p class="text-body"><b>XiaoLumi</b>, WrioLumi, ScaraLumi, DainLumi, WrioLette, SanBina, KaveTham, ArleVie, ArleBina</p>
+                                    <p class="text-body">I'm actually fine with ships other than these as long as they're not in my NOTP list.</p>
+                                    <br>
+                                    <h2 class="h2-body">NOTP</h2>
+                                    <p class="text-body">Arle x Furina, Wriothesley x ANYONE BUT NEUVILETTE</p>
+                                    <br>
+                                    <h2 class="h2-body">HATE LIST</h2>
+                                    <p class="text-body">Dottore.</p>
+                                    <p class="text-body">ANYONE WHO LIKES DOTTORE STRICTLY <b>DNI</b></p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-hsr" hidden>
+                
+            </div>
+        </div>
+        <div id="about-card"></div>
+    </div>
+    
+    <!-- Tiering History Modal -->
+    <div id="tiering-modal" class="modal" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h2-body">TIERING HISTORY</h2>
+                <span class="close-modal" id="close-tiering-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="sort-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="sort-btn active" data-sort="date" data-order="asc">Date ↓</button>
+                    <button class="sort-btn" data-sort="rank" data-order="asc">Rank ↓</button>
+                    <button class="sort-btn" data-sort="points" data-order="asc">Points ↓</button>
+                </div>
+                <div id="tiering-entries-container"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

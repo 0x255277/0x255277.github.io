@@ -203,6 +203,17 @@ class Sparkle {
         this.sparklesArr.push(elem);
     }
 
+    getRandomColor() {
+        const colors = [
+            '#ffffff',
+            '#ffccd7ff',
+            '#ffffcc',
+            '#ccffdaff',
+            '#cce3ffff',
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
     styleSparkle(elem, e, i) {
         let j = (1 - i) * 50;
         let size = Math.random() * 4 + 1 + 'px';
@@ -214,11 +225,7 @@ class Sparkle {
         elem.style.height = size;
         elem.style.borderRadius = size;
         
-        elem.style.background = 'hsla(' +
-            Math.round(Math.random() * 160) + ', ' +
-            '60%, ' +
-            '90%, ' +
-            i + ')';
+        elem.style.background = this.getRandomColor();
         
         return elem;
     }
@@ -305,6 +312,209 @@ window.addEventListener('DOMContentLoaded', () => {
             aboutCard.style.display = 'block';
             agreement.style.display = 'none';
             aboutCard.innerHTML = '<p class="text-body">feel free to leave</p>';
+        });
+    }
+    
+    // Fandom page tag functionality
+    const tagPrsk = document.querySelector('.tag-prsk');
+    const tagGenshin = document.querySelector('.tag-genshin');
+    const tagHsr = document.querySelector('.tag-hsr');
+    const boxPrsk = document.querySelector('.box-prsk');
+    const boxGenshin = document.querySelector('.box-genshin');
+    const boxHsr = document.querySelector('.box-hsr');
+    
+    if (tagPrsk && tagGenshin && tagHsr && boxPrsk && boxGenshin && boxHsr) {
+        function hideAllBoxes() {
+            boxPrsk.setAttribute('hidden', '');
+            boxGenshin.setAttribute('hidden', '');
+            boxHsr.setAttribute('hidden', '');
+
+            tagPrsk.style.removeProperty('width');
+            tagGenshin.style.removeProperty('width');
+            tagHsr.style.removeProperty('width');
+
+            tagPrsk.style.removeProperty('font-size');
+            tagGenshin.style.removeProperty('font-size');
+            tagHsr.style.removeProperty('font-size');
+        }
+        
+        tagPrsk.addEventListener('click', () => {
+            hideAllBoxes();
+            boxPrsk.removeAttribute('hidden');
+            tagPrsk.style.width = '33%';
+            tagPrsk.style.fontSize = '16px';
+        });
+        
+        tagGenshin.addEventListener('click', () => {
+            hideAllBoxes();
+            boxGenshin.removeAttribute('hidden');
+            tagGenshin.style.width = '33%';
+            tagGenshin.style.fontSize = '16px';
+        });
+        
+        tagHsr.addEventListener('click', () => {
+            hideAllBoxes();
+            boxHsr.removeAttribute('hidden');
+            tagHsr.style.width = '33%';
+            tagHsr.style.fontSize = '16px';
+        });
+        
+        tagPrsk.style.cursor = 'pointer';
+        tagGenshin.style.cursor = 'pointer';
+        tagHsr.style.cursor = 'pointer';
+    }
+
+    const tieringHistoryButton = document.getElementById('tiering-history');
+    const tieringModal = document.getElementById('tiering-modal');
+    const closeTieringModal = document.getElementById('close-tiering-modal');
+
+    tieringHistoryButton.style.cursor = 'pointer';
+    
+    // Tiering History Data - Load from JSON file
+    let tieringData = [];
+    
+    // Function to load tiering data from JSON file
+    async function loadTieringData() {
+        try {
+            const response = await fetch('../assets/fandom/tiering-data.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            tieringData = await response.json();
+            return tieringData;
+        } catch (error) {
+            console.error('Error loading tiering data:', error);
+            // Fallback to empty array if loading fails
+            tieringData = [];
+            return tieringData;
+        }
+    }
+    
+    function formatPoints(points) {
+        if (points === null) return "-p";
+        return points.toLocaleString() + "p";
+    }
+    
+    function formatRank(rank) {
+        return "#" + rank.toLocaleString();
+    }
+    
+    function renderTieringEntries(data) {
+        const container = document.getElementById('tiering-entries-container');
+        if (!container) return;
+        
+        container.innerHTML = data.map(entry => `
+            <div class="tiering-entry">
+                <table>
+                    <tr>
+                        <td style="width: 70%;">
+                            <h2 class="h2-body">${entry.name}</h2>
+                            <p class="text-body">Date: ${entry.date}</p>
+                            <p class="text-body">Rank: ${formatRank(entry.rank)}</p>
+                            <p class="text-body">Point: ${formatPoints(entry.points)}</p>
+                        </td>
+                        <td style="width: 30%; text-align: right; vertical-align: center;">
+                            <img src="${entry.image}" alt="${entry.alt}" style="max-width: 100%; height: auto;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        `).join('');
+    }
+    
+    function sortTieringData(sortBy, order) {
+        const sortedData = [...tieringData].sort((a, b) => {
+            let valueA, valueB;
+            
+            switch (sortBy) {
+                case 'date':
+                    valueA = new Date(b.date);
+                    valueB = new Date(a.date);
+                    break;
+                case 'rank':
+                    valueA = a.rank;
+                    valueB = b.rank;
+                    console.log(valueA, valueB);
+                    break;
+                case 'points':
+                    valueA = b.points || 0;
+                    valueB = a.points || 0;
+                    break;
+                default:
+                    return 0;
+            }
+            
+            if (order === 'asc') {
+                return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+            } else {
+                return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+            }
+        });
+        
+        renderTieringEntries(sortedData);
+    }
+    
+    // Add sort button event listeners
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sortBy = btn.getAttribute('data-sort');
+            let currentOrder = btn.getAttribute('data-order');
+
+            const sortLabels = {
+                'date': 'Date',
+                'rank': 'Rank', 
+                'points': 'Points'
+            };
+
+            let newOrder;
+            if(btn.classList.contains('active')) {
+                newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                btn.setAttribute('data-order', newOrder);
+
+                const arrow = newOrder === 'asc' ? '↓' : '↑';
+                btn.textContent = `${sortLabels[sortBy]} ${arrow}`;
+            } else {
+                newOrder = 'asc';
+                btn.setAttribute('data-order', newOrder);
+                
+                btn.textContent = `${sortLabels[sortBy]} ↓`;
+
+                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            sortTieringData(sortBy, newOrder);
+        });
+    });
+    
+    if (tieringHistoryButton && tieringModal && closeTieringModal) {
+        tieringHistoryButton.addEventListener('click', async () => {
+            tieringModal.removeAttribute('hidden');
+            tieringModal.style.display = 'flex';
+            
+            // Show loading message
+            const container = document.getElementById('tiering-entries-container');
+            if (container) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: #ccc;">Loading tiering data...</div>';
+            }
+            
+            // Load data and render
+            await loadTieringData();
+            sortTieringData('date', 'asc');
+        });
+        
+        // Close modal when X is clicked
+        closeTieringModal.addEventListener('click', () => {
+            tieringModal.setAttribute('hidden', '');
+            tieringModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside of modal content
+        tieringModal.addEventListener('click', (e) => {
+            if (e.target === tieringModal) {
+                tieringModal.setAttribute('hidden', '');
+                tieringModal.style.display = 'none';
+            }
         });
     }
 });
