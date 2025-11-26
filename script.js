@@ -454,7 +454,6 @@ window.addEventListener('DOMContentLoaded', () => {
         renderTieringEntries(sortedData);
     }
     
-    // Add sort button event listeners
     document.querySelectorAll('.sort-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const sortBy = btn.getAttribute('data-sort');
@@ -492,24 +491,20 @@ window.addEventListener('DOMContentLoaded', () => {
             tieringModal.removeAttribute('hidden');
             tieringModal.style.display = 'flex';
             
-            // Show loading message
             const container = document.getElementById('tiering-entries-container');
             if (container) {
                 container.innerHTML = '<div style="text-align: center; padding: 20px; color: #ccc;">Loading tiering data...</div>';
             }
             
-            // Load data and render
             await loadTieringData();
             sortTieringData('date', 'asc');
         });
         
-        // Close modal when X is clicked
         closeTieringModal.addEventListener('click', () => {
             tieringModal.setAttribute('hidden', '');
             tieringModal.style.display = 'none';
         });
         
-        // Close modal when clicking outside of modal content
         tieringModal.addEventListener('click', (e) => {
             if (e.target === tieringModal) {
                 tieringModal.setAttribute('hidden', '');
