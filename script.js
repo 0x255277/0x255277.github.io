@@ -11,7 +11,7 @@ class Star {
         this.x = this.baseX;
         this.y = this.baseY;
 
-        this.star_size = Math.random() * 2 + 1;
+        this.star_size = Math.random() * 4 + 1;
         this.opacity = 0;
         this.fadeDirection = 1; // 1 fade in, -1 fade out
         this.fadeSpeed = Math.random() * 0.02 + 0.005;
@@ -48,7 +48,7 @@ class Star {
                 this.baseY = Math.random() * (this.canvas.height + 2 * extendY) - extendY;
                 this.maxOpacity = Math.random() * 0.8;
                 this.color = this.getRandomColor();
-                this.parallax_depth = Math.random() * 0.15 + 0.02;
+                this.parallax_depth = Math.random() * 0.2 + 0.02;
             }
         }
 
@@ -99,7 +99,7 @@ class Starfield {
         this.canvas = document.getElementById('starfield');
         this.context = this.canvas.getContext('2d');
         this.stars = [];
-        this.numStars = 200;
+        this.numStars = 250;
         this.mouseX = window.innerWidth / 2;
         this.mouseY = window.innerHeight / 2;
         this.scrollX = 0;
@@ -120,13 +120,13 @@ class Starfield {
         
         window.addEventListener('restar_size', () => this.restar_sizeCanvas());
         
-        // mouse movement (track across entire document)
+        // mouse movement
         document.addEventListener('mousemove', (e) => {
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
         });
         
-        // touch movement for mobile (track across entire document)
+        // touch movement (mobile)
         document.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
@@ -297,15 +297,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 <p class="text-body mb-2">I'm a 21+ y.o. person who loves to play rhythm games (i'm bad at it), rpg games, and watch various anime.</p>
                 <p class="text-body mb-2">I also collect merch, especially for Project Sekai !!</p>
                 <div class="box">
-                    <p class="text-body mb-0 text-bold">!! HEAVY RT ACCOUNT, NOT NSFW FREE !!</p>
+                <p class="text-body mb-0 text-bold">!! HEAVY RT ACCOUNT, NOT NSFW FREE !!</p>
                 </div>
+                <h1 class="h1-body">NOTES</h1>
+                <p class="text-body mb-2">I often (jokingly) claim my favorite character as my wife/husband. If i'm doing it too much and you're not comfy with it, pls let me know!!</p>
                 <p class="text-body mb-2">I often randomly join any moots' convo on TL, if you're not comfy pls let me know!!</p>
                 <p class="text-body mb-2">Life is busy, I will be either kinda inactive or just active in one period of time.</p>
             `;
             navbar.innerHTML = `
                 <a class="text-navbar" style="margin-left: 10%;" href="https://x.com/cfyia">@cfyia</a>
                 <a class="text-navbar" style="margin-left: 25%;" href="./"> > home</a>
-                <a class="text-navbar" style="margin-left: 38%;" href="./fandom">fandom</a>`
+                <a class="text-navbar" style="margin-left: 38%;" href="./fandom">fandom</a>` 
         });
         
         noButton.addEventListener('click', () => {
